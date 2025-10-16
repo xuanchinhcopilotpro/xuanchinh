@@ -21,7 +21,7 @@ namespace ApiTester.Services
             }
 
             // Extract URL - first quoted string or first argument
-            var urlMatch = Regex.Match(curlCommand, @"['\`"]([^'\`"]+)['\`"]");
+            var urlMatch = Regex.Match(curlCommand, @"['""](^['""]+)['""]]");
             if (urlMatch.Success)
             {
                 request.Url = urlMatch.Groups[1].Value;
@@ -55,7 +55,7 @@ namespace ApiTester.Services
             }
 
             // Extract headers (-H or --header)
-            var headerMatches = Regex.Matches(curlCommand, @"(?:-H|--header)\s+['\`"]([^'\`"]+)['\`"]", RegexOptions.IgnoreCase);
+            var headerMatches = Regex.Matches(curlCommand, @"(?:-H|--header)\s+['""](^['""]+)['""]]", RegexOptions.IgnoreCase);
             foreach (Match match in headerMatches)
             {
                 var headerValue = match.Groups[1].Value;
@@ -69,7 +69,7 @@ namespace ApiTester.Services
             }
 
             // Extract body (--data, --data-raw, -d)
-            var dataMatch = Regex.Match(curlCommand, @"(?:--data-raw|--data|-d)\s+['\`"](.+?)['\`"]", RegexOptions.Singleline);
+            var dataMatch = Regex.Match(curlCommand, @"(?:--data-raw|--data|-d)\s+['""](+?)['""]]", RegexOptions.Singleline);
             if (dataMatch.Success)
             {
                 request.Body = dataMatch.Groups[1].Value;
