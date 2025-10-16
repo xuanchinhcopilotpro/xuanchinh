@@ -1,0 +1,31 @@
+name: Build and publish Windows exe
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore ./test/ApiTester.csproj
+
+      - name: Publish self-contained single-file exe (win-x64)
+        run: |
+          dotnet publish ./test/ApiTester.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableWindowsTargeting=true -o ./test/bin/publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ApiTester-win-x64
+          path: ./test/bin/publish
