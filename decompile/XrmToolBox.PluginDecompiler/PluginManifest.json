@@ -1,0 +1,10 @@
+{
+  "Name": "Plugin Decompiler",
+  "Author": "Your Name",
+  "Description": "Decompile Dynamics 365 plugin DLL files to readable C# source code. Perfect for learning, debugging, and recovering lost source code.",
+  "Version": "1.0.0.0",
+  "MinimalXrmToolBoxVersion": "1.2023.12.71",
+  "RequiredAssemblies": [
+    "ICSharpCode.Decompiler.dll"
+  ]
+}
